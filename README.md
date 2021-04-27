@@ -12,7 +12,8 @@ Tools used:
 BPMN
 -
 
-![Alt text](./src/main/resources/process-message.png?raw=true "Workflow")
+![Alt text](./src/main/resources/process-message.png?raw=true "Service Task Workflow")
+![Alt text](./src/main/resources/check-weather.png?raw=true "User Task Workflow")
 
 
 Respository

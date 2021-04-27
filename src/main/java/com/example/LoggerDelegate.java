@@ -18,7 +18,7 @@ public class LoggerDelegate implements JavaDelegate {
 				+ execution.getCurrentActivityName().replaceAll("\n", " ") + "'" + ", processInstanceId="
 				+ execution.getProcessInstanceId() + ", businessKey=" + execution.getProcessBusinessKey()
 				+ ", executionId=" + execution.getId() + ", modelName="
-				+ execution.getBpmnModelInstance().getModel().getModelName() + ", elementId"
+				+ execution.getBpmnModelInstance().getModel().getModelName() + ", elementId="
 				+ execution.getBpmnModelElementInstance().getId() + " \n\n");
 	}
 }

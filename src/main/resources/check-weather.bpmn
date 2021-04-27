@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_1c11yjz" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.6.0">
+  <bpmn:process id="check_weather" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Start">
+      <bpmn:outgoing>Flow_0c6bcii</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="check-weather" name="Check Weather">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="answer" label="Weather" type="enum">
+            <camunda:value id="hot" name="Hot" />
+            <camunda:value id="cold" name="Cold" />
+            <camunda:value id="rainning" name="Raining" />
+            <camunda:value id="fog" name="Fog" />
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0c6bcii</bpmn:incoming>
+      <bpmn:outgoing>is_cold</bpmn:outgoing>
+      <bpmn:outgoing>is_hot</bpmn:outgoing>
+      <bpmn:outgoing>rainning</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0c6bcii" sourceRef="StartEvent_1" targetRef="check-weather" />
+    <bpmn:sequenceFlow id="is_cold" name="cold" sourceRef="check-weather" targetRef="turn_on_heater">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${answer == 'cold'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="is_hot" name="hot" sourceRef="check-weather" targetRef="turn_on_cooling">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${answer == 'hot'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="rainning" name="rainning" sourceRef="check-weather" targetRef="get_unbrella">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${answer == 'rainning'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="turn_on_heater" name="Turn on Heater" camunda:delegateExpression="${logger}">
+      <bpmn:incoming>is_cold</bpmn:incoming>
+      <bpmn:outgoing>Flow_0bnja9h</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="turn_on_cooling" name="Turn on Cooling" camunda:delegateExpression="${logger}">
+      <bpmn:incoming>is_hot</bpmn:incoming>
+      <bpmn:outgoing>Flow_0gc2ysv</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="get_unbrella" name="Get Unbrella" camunda:delegateExpression="${logger}">
+      <bpmn:incoming>rainning</bpmn:incoming>
+      <bpmn:outgoing>Flow_0xuf6b6</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="end" name="End">
+      <bpmn:incoming>Flow_0bnja9h</bpmn:incoming>
+      <bpmn:incoming>Flow_0gc2ysv</bpmn:incoming>
+      <bpmn:incoming>Flow_0xuf6b6</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0bnja9h" sourceRef="turn_on_heater" targetRef="end" />
+    <bpmn:sequenceFlow id="Flow_0gc2ysv" sourceRef="turn_on_cooling" targetRef="end" />
+    <bpmn:sequenceFlow id="Flow_0xuf6b6" sourceRef="get_unbrella" targetRef="end" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="check_weather">
+      <bpmndi:BPMNEdge id="Flow_0c6bcii_di" bpmnElement="Flow_0c6bcii">
+        <di:waypoint x="215" y="250" />
+        <di:waypoint x="340" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1o8x4az_di" bpmnElement="is_cold">
+        <di:waypoint x="440" y="250" />
+        <di:waypoint x="510" y="250" />
+        <di:waypoint x="510" y="110" />
+        <di:waypoint x="580" y="110" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="529" y="83" width="21" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ctam72_di" bpmnElement="is_hot">
+        <di:waypoint x="440" y="250" />
+        <di:waypoint x="580" y="250" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="531" y="233" width="17" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_144owj1_di" bpmnElement="rainning">
+        <di:waypoint x="440" y="250" />
+        <di:waypoint x="510" y="250" />
+        <di:waypoint x="510" y="380" />
+        <di:waypoint x="580" y="380" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="520" y="353" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0bnja9h_di" bpmnElement="Flow_0bnja9h">
+        <di:waypoint x="680" y="110" />
+        <di:waypoint x="781" y="110" />
+        <di:waypoint x="781" y="250" />
+        <di:waypoint x="882" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0gc2ysv_di" bpmnElement="Flow_0gc2ysv">
+        <di:waypoint x="680" y="250" />
+        <di:waypoint x="882" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0xuf6b6_di" bpmnElement="Flow_0xuf6b6">
+        <di:waypoint x="680" y="380" />
+        <di:waypoint x="781" y="380" />
+        <di:waypoint x="781" y="250" />
+        <di:waypoint x="882" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_11lum5l_di" bpmnElement="turn_on_cooling">
+        <dc:Bounds x="580" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0r96yw5_di" bpmnElement="get_unbrella">
+        <dc:Bounds x="580" y="340" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_18b8qoz_di" bpmnElement="turn_on_heater">
+        <dc:Bounds x="580" y="70" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_00r1lvv_di" bpmnElement="check-weather">
+        <dc:Bounds x="340" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="232" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="185" y="275" width="25" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ddsc4u_di" bpmnElement="end">
+        <dc:Bounds x="882" y="232" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="890" y="275" width="20" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
